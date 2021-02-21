@@ -1,0 +1,27 @@
+piVersion : apps/v1
+kind: Deployment
+metadata:
+  name: siteconsultarepos 
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: siteconsultarepos
+  template:
+    metadata:
+      labels:
+        app: siteconsultarepos 
+    spec:
+      containers:
+        - name: siteconsultarepos 
+          image: anpazdevops.azurecr.io/siteconsultarepos
+          env:
+            - name: UrlConsultaGitHub
+              value: https://api.github.com/users/azurenapratica/repos?per_page=7
+            - name: ApplicationInsights__InstrumentationKey
+              valueFrom:
+                configMapKeyRef:
+                  name: sitereposk8s-configmap
+                  key: ApplicationInsightsSiteRepos
+          ports:
+          - containerPort: 80
